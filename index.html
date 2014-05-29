@@ -1,0 +1,157 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<meta http-equiv="pragma" content="no-cache">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css">
+    	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+                 
+<script language="JavaScript">
+<!--
+/***************** Magic Squares Functions *********************/
+function initArray() {      
+        this.length = initArray.arguments.length      
+        for (var i = 0; i < this.length; i++)      
+                this[i+1] = initArray.arguments[i]   
+}
+
+var pos = new initArray(16,16,16,16,16,16,16,16,16,16,16,16,16,16,16,16);
+var nummoves= 0;                                                
+
+function random() {      
+        today = new Date();      
+        num = today.getTime();      
+        num = Math.round(Math.abs(Math.sin (num)*1000000)) % 16;      
+        return num;   
+}
+
+function display(pos) {       
+        for (var i=0; i<16; i++)  {
+                document.forms[0].elements[i].value = pos[i];
+        }
+        document.forms[0].moves.value= nummoves;
+        win();   
+}
+
+function move(num) {     
+// num is the number of the field the user clicked - not the image!     
+        if (num < 15 && pos[num+1]==0) {            // switch with num to right
+                pos[num+1]= pos[num];                
+                pos[num]= 0;                  
+                nummoves++;              
+        }         
+        else if (num > 0 && pos[num-1]==0) {       // switch with num to left       
+                pos[num-1]= pos[num];              
+                pos[num]= 0;               
+                nummoves++;           
+        }       
+        else if (num > 3 && pos[num-4]==0) {       
+                pos[num-4]= pos[num];       
+                pos[num]= 0;        
+                nummoves++;     
+        }      
+        else if (num < 12 && pos[num+4]==0 ) {                  
+                pos[num+4]= pos[num];                  
+                pos[num]= 0;                   
+                nummoves++;                 
+        }           
+        //else illegal move => no move!         
+        display(pos);   
+}   
+
+function win() {     
+        if (pos[0]== 1 & pos[1]== 2 & pos[2]== 3 & pos[3]== 4 & 
+            pos[4]== 5 & pos[5]== 6 & pos[6]== 7 & pos[7]== 8 & 
+	    pos[8]== 9 & pos[9]== 10 & pos[10]== 11 & pos[11]== 12 & 
+	    pos[12]== 13 & pos[13]== 14 & pos[14]== 15 & pos[15]== 0) {         
+                        if (confirm('¡Lo lograste! ¿Quieres reiniciar?')) juegonuevo();     
+                }   
+}   
+
+function juegonuevo() {      
+        var x=1;
+        for (var i=0; i<16; i++) {
+                pos[i]=16;
+        }
+        for (var i=0; i<16;i++) {        
+                randomnum=random();
+                if (randomnum==16) randomnum=15;
+                x=1;
+                for (var j=0; j<16; j++)  {
+                        if (j==i)  continue;
+                        if (randomnum==pos[j]) {
+                                x=0;
+                                break;
+                        }
+                }
+                if (x==0) {
+                        i--;
+                        continue;
+                }
+                //alert("i="+i+", randomnum="+randomnum);
+                pos[i]=randomnum;
+        }      
+        nummoves=0;      
+        display(pos);   
+}   
+// -->
+</script>
+
+<title>CUADROS MAGICOS</title>
+</head>
+<BODY onLoad="window.juegonuevo()">
+<h1 align=center>CUADROS MAGICOS</h1><p>
+
+<center>
+	<table border=0 celpadding=0 cellspacing=0>
+		<tr>
+			<td width="292">
+				<form>
+					<input type="button" value=" 1 " onClick="window.move(0)" style='width:70px; height:70px'>
+					<input type="button" value=" 2 " onClick="window.move(1)" style='width:70px; height:70px'>
+					<input type="button" value=" 3 " onClick="window.move(2)" style='width:70px; height:70px'>
+					<input type="button" value=" 4 " onClick="window.move(3)" style='width:70px; height:70px'><br>
+					<input type="button" value=" 5 " onClick="window.move(4)" style='width:70px; height:70px'>
+					<input type="button" value=" 6 " onClick="window.move(5)" style='width:70px; height:70px'>
+					<input type="button" value=" 7 " onClick="window.move(6)" style='width:70px; height:70px'>
+					<input type="button" value=" 8 " onClick="window.move(7)" style='width:70px; height:70px'><br>
+					<input type="button" value=" 9 " onClick="window.move(8)" style='width:70px; height:70px'>
+					<input type="button" value=" 10 " onClick="window.move(9)" style='width:70px; height:70px'>
+					<input type="button" value=" 11 " onClick="window.move(10)" style='width:70px; height:70px'>
+					<input type="button" value=" 12 " onClick="window.move(11)" style='width:70px; height:70px'><br>
+					<input type="button" value=" 13 " onClick="window.move(12)" style='width:70px; height:70px'>
+					<input type="button" value=" 14 " onClick="window.move(13)" style='width:70px; height:70px'>
+					<input type="button" value=" 15 " onClick="window.move(14)" style='width:70px; height:70px'>
+					<input type="button" value=" 16 " onClick="window.move(15)" style='width:70px; height:70px'><p>
+				</form>
+			</td>
+			<td width="170">	
+					MOVIMIENTOS:<br>
+					<input name="moves" size=7 value=" 0 "> <p> 
+					<input type="submit" value="NUEVO JUEGO" onClick="window.juegonuevo()">
+				
+			</td>
+		
+		<td width="333">
+			<center>
+			INSTRUCCIONES:<br> 
+				EL "0" ES EL ESPACIO "VACIO".<br> 
+				HAGA CLIC EN CUAQUIER NUMERO<br>
+				JUNTO A 0 Y VAN A CAMBIAR DE LUGAR.<br><br>
+
+			OBJETIVO:<br>
+				COLOCAR LOS NUMEROS EN ORDEN ACENDENTE<br>
+				DE DERECHA A IZQUIERDA FINALIZANDO EN 0<br>
+								
+				<h2>
+					&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;2&nbsp;&nbsp;3<br> 
+					&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;6<br> 
+					&nbsp;&nbsp;&nbsp;&nbsp;7&nbsp;&nbsp;8&nbsp;&nbsp;0<br> 	
+				</h2>
+			</center>
+		</td>
+	</table>
+</center>
+
+</body>
+</html>
